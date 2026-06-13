@@ -61,6 +61,12 @@ body{background:#08041a;color:#fff;font-family:"Lato",sans-serif;min-height:100v
 .play-btn{font-size:.8rem;padding:.6rem 1.2rem;background:rgba(30,215,96,.12);border-color:rgba(30,215,96,.35);color:#1ed760;letter-spacing:1px}
 .play-btn2{background:rgba(255,180,210,.1);border-color:rgba(255,150,200,.35);color:#ffb3d1}
 
+
+.music-player{margin-top:15px;padding:14px;border-radius:16px;background:rgba(120,60,255,.12);border:1px solid rgba(200,140,255,.25);backdrop-filter:blur(10px)}
+.volume-control{margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px}
+#volumeSlider{width:180px;accent-color:#b56cff}
+
+
 /* FINAL */
 .f-hearts{font-size:1.4rem;letter-spacing:8px;margin-bottom:1rem;animation:fadein 1s ease}
 .f-title{font-family:"Cinzel",serif;font-size:clamp(1.3rem,4vw,1.9rem);color:#fff;text-align:center;margin-bottom:1rem;text-shadow:0 0 30px rgba(200,140,255,.5);animation:fadein 1.2s ease}
@@ -89,9 +95,11 @@ body{background:#08041a;color:#fff;font-family:"Lato",sans-serif;min-height:100v
   <p class="g-sub">encontre o lugar seguro — apenas 1 existe</p>
   <div class="grid" id="mine-grid"></div>
   <div class="phrase" id="phrase-box"></div>
-  <div class="music-wrap">
-    <iframe id="yt1" width="280" height="52" src="" frameborder="0" allow="autoplay;encrypted-media" allowfullscreen></iframe>
-    <button class="btn play-btn" id="pbtn1" onclick="playM1()">🎵 TOCA A MÚSICA ENQUANTO JOGA</button>
+  <div class="music-player">
+    <button class="btn" onclick="playMusic(1)">🎵 Princesa</button>
+    <div class="volume-control">
+        🔉 <input type="range" id="volumeSlider" min="0" max="100" value="50" oninput="changeVolume(this.value)"> 🔊
+    </div>
   </div>
 </div>
 
@@ -113,10 +121,9 @@ body{background:#08041a;color:#fff;font-family:"Lato",sans-serif;min-height:100v
     <button class="arr" style="grid-area:right" onclick="mp(0,1)">→</button>
     <button class="arr" style="grid-area:down" onclick="mp(1,0)">↓</button>
   </div>
-  <div class="music-wrap">
-    <iframe id="yt2" width="280" height="52" src="" frameborder="0" allow="autoplay;encrypted-media" allowfullscreen></iframe>
-    <button class="btn play-btn play-btn2" id="pbtn2" onclick="playM2()">🎵 MÚSICA DO LABIRINTO</button>
-  </div>
+  <div class="music-player">
+    <button class="btn" onclick="playMusic(2)">🎵 Viver de Carinho</button>
+</div>
 </div>
 
 <!-- FINAL -->
@@ -129,10 +136,14 @@ body{background:#08041a;color:#fff;font-family:"Lato",sans-serif;min-height:100v
     Cada momento com você é o meu jogo favorito.<br><br>
     <span style="color:#d4a8ff">Te amo infinitamente, momo. ❤️</span>
   </p>
-  <div class="f-music">
-    <iframe id="yt3" width="300" height="52" src="https://www.youtube.com/embed/skBJ7YUWk-U?autoplay=1&start=0" frameborder="0" allow="autoplay;encrypted-media" allowfullscreen></iframe>
-  </div>
+  <div class="music-player">
+    <button class="btn" onclick="playMusic(3)">🎵 Feel</button>
 </div>
+</div>
+
+<audio id="music1" loop><source src="audio/princesa.mp3" type="audio/mpeg"></audio>
+<audio id="music2" loop><source src="audio/viver-de-carinho.mp3" type="audio/mpeg"></audio>
+<audio id="music3" loop><source src="audio/feel.mp3" type="audio/mpeg"></audio>
 
 <script>
 // ===== STARS =====
@@ -210,7 +221,7 @@ function clickCell(idx,cell){
   }
 }
 
-function playM1(){
+function playM1_disabled(){
   document.getElementById("yt1").src="https://www.youtube.com/embed/MO37-1KgcI4?autoplay=1";
   document.getElementById("yt1").style.display="block";
   document.getElementById("pbtn1").style.display="none";
@@ -280,11 +291,34 @@ function mp(dr,dc){
   }
 }
 
-function playM2(){
+function playM2_disabled(){
   document.getElementById("yt2").src="https://www.youtube.com/embed/r_MRd0rQ42s?autoplay=1";
   document.getElementById("yt2").style.display="block";
   document.getElementById("pbtn2").style.display="none";
 }
+
+
+const musics={
+1:document.getElementById("music1"),
+2:document.getElementById("music2"),
+3:document.getElementById("music3")
+};
+
+function stopAllMusic(){
+Object.values(musics).forEach(m=>{m.pause();m.currentTime=0;});
+}
+
+function playMusic(id){
+stopAllMusic();
+musics[id].volume=0.5;
+musics[id].play();
+}
+
+function changeVolume(value){
+const volume=value/100;
+Object.values(musics).forEach(m=>m.volume=volume);
+}
+
 
 // keyboard
 document.addEventListener("keydown",e=>{
