@@ -229,7 +229,7 @@ function playM1_disabled(){
 
 // ===== VICTORY → GAME2 =====
 function goGame2(){
-  document.getElementById("yt1").src="";
+  playMusic(2);
   showScreen("game2");
   setTimeout(initMaze,120);
 }
@@ -286,7 +286,7 @@ function mp(dr,dc){
   pp=[nr,nc];drawMaze();
   if(nr===END[0]&&nc===END[1]){
     mazeDone=true;
-    document.getElementById("yt2").src="";
+    playMusic(3);
     setTimeout(()=>showScreen("final"),900);
   }
 }
@@ -309,9 +309,19 @@ Object.values(musics).forEach(m=>{m.pause();m.currentTime=0;});
 }
 
 function playMusic(id){
-stopAllMusic();
+
+Object.entries(musics).forEach(([key,m])=>{
+  if(Number(key)!==id){
+    m.pause();
+    m.currentTime=0;
+  }
+});
+
 musics[id].volume=0.5;
-musics[id].play();
+
+if(musics[id].paused){
+  musics[id].play().catch(console.error);
+}
 }
 
 function changeVolume(value){
