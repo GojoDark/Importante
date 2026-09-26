@@ -150,9 +150,9 @@ document.querySelectorAll('[data-next]').forEach(b=>b.addEventListener('click',(
 // ---------- music / youtube iframe api ----------
 const tracks={
   butterflies:{id:'-CCl0B0JGho',name:'Butterflies · Abe Parker'},
-  forever:{id:'LCz_3FJ-O8Y',name:'forever and a day · Abe Parker'},
-  itis:{id:'Axo4Ymdts98',name:'it is what it is · Abe Parker'},
-  until:{id:'MlThQTo6D8A',name:'Until I Found You · Stephen Sanchez'}
+  forever:{id:'In9ROR45rvM',name:'forever and a day · Abe Parker'},
+  itis:{id:'2aRD72sDzEc',name:'it is what it is · Abe Parker'},
+  until:{id:'GxldQ9eX2wo',name:'Until I Found You · Stephen Sanchez'}
 };
 let player,musicReady=false,musicWanted=false,currentTrack='butterflies',targetVolume=17,fadeTimer=null;
 window.onYouTubeIframeAPIReady=()=>{player=new YT.Player('ytPlayer',{height:'1',width:'1',videoId:tracks[currentTrack].id,playerVars:{controls:0,playsinline:1,rel:0},events:{onReady:()=>{musicReady=true;player.setVolume(targetVolume);if(musicWanted)player.playVideo()},onStateChange:e=>{if(e.data===YT.PlayerState.ENDED&&musicWanted){player.seekTo(0);player.playVideo()}}}})};
